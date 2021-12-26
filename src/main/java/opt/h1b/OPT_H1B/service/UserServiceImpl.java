@@ -4,6 +4,9 @@ import opt.h1b.OPT_H1B.domain.UserClass;
 import opt.h1b.OPT_H1B.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UserServiceImpl implements UserService{
 
@@ -18,4 +21,11 @@ public class UserServiceImpl implements UserService{
         UserClass savedUser = userRepository.save(user);
         return savedUser;
     }
+
+    @Override
+    public List<UserClass> getAll() {
+       return userRepository.findAll().stream().collect(Collectors.toList());
+    }
+
+
 }
