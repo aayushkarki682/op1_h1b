@@ -23,6 +23,7 @@ public class UserClass {
     private long id;
     private String firstName;
     private String lastName;
+    private String gmail;
     private String userName;
     private String password;
 
