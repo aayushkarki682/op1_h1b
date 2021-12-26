@@ -1,37 +1,16 @@
 package opt.h1b.OPT_H1B.controller;
 
-import opt.h1b.OPT_H1B.domain.UserClass;
-import opt.h1b.OPT_H1B.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-
-@RestController
+@Controller
+@RequestMapping("/")
 public class UserController {
 
-    private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
+    @GetMapping("/homePage")
+    public String indexPage(){
+        System.out.println("aayush");
+        return "index";
     }
-
-    @PostMapping("/signUp")
-    public String saveUser(@RequestBody UserClass userClass){
-        UserClass savedUser = userService.save(userClass);
-        if(savedUser.getId() != 0){
-            return "Success";
-
-        } else {
-            return null;
-        }
-    }
-    @GetMapping(path = "/getAll", produces = "application/json")
-    public List<UserClass> getAllUsers(){
-        return userService.getAll();
-    }
-
 }

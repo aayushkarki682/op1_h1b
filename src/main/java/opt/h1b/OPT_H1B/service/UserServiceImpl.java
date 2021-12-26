@@ -1,6 +1,6 @@
 package opt.h1b.OPT_H1B.service;
 
-import opt.h1b.OPT_H1B.domain.UserClass;
+import opt.h1b.OPT_H1B.domain.User;
 import opt.h1b.OPT_H1B.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +17,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserClass save(UserClass user) {
-        UserClass savedUser = userRepository.save(user);
+    public User save(User user) {
+        User savedUser = userRepository.save(user);
         return savedUser;
     }
 
     @Override
-    public List<UserClass> getAll() {
+    public List<User> getAll() {
        return userRepository.findAll().stream().collect(Collectors.toList());
     }
 

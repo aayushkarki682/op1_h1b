@@ -1,8 +1,10 @@
 package opt.h1b.OPT_H1B.repository;
 
-import opt.h1b.OPT_H1B.domain.UserClass;
+import opt.h1b.OPT_H1B.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<UserClass, Long> {
+import java.util.Optional;
 
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByUserName(String userName);
 }
