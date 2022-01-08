@@ -20,7 +20,7 @@ public class User {
 
     private String firstName;
     private String lastName;
-    private String gmail;
+    private String email;
     private String userName;
     private String password;
 

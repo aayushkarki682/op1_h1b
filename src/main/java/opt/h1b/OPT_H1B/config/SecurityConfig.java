@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -15,19 +16,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.
-                authorizeRequests(authorize -> {
-                    authorize
-                            .antMatchers("/homePage").permitAll()
-                            .antMatchers("/api/**").permitAll()
-                            .antMatchers(HttpMethod.POST, "/api/signUp").permitAll()
-                            .antMatchers(HttpMethod.GET, "/api/getAll").permitAll();
-                })
+        http.cors().and()
+                .antMatcher("/api/**")
+
                 .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/api/signUp").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/login").permitAll()
                 .anyRequest().authenticated()
+
                 .and()
-                .formLogin().and()
-                .httpBasic();
+
+
+                .formLogin().disable()
+                .httpBasic().and().csrf().disable() ;
     }
 
     @Bean
