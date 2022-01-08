@@ -38,19 +38,21 @@ public class UserRestController {
         return userService.getAll();
     }
 
-    @PostMapping("/login")
-    public String loginUser(@RequestBody User user){
+    @PostMapping(path = "/login")
+    public User loginUser(@RequestBody User user){
         String password = user.getPassword();
-        password = passwordEncoder.encode(password);
+
         User dbUser = userService.findByUserName(user.getUserName());
+        System.out.println(dbUser.getPassword());
         if(dbUser != null){
-            if(dbUser.getPassword() == password){
-                return "Success";
+            if(passwordEncoder.matches(password, dbUser.getPassword())){
+
+                return dbUser;
             } else {
-                return "Credential not right";
+                return null;
             }
         } else {
-            return "Credentials not completed";
+            return null;
         }
     }
 
