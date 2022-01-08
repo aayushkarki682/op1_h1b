@@ -15,12 +15,12 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String firstName;
     private String lastName;
-    private String gmail;
+    private String email;
     private String userName;
     private String password;
 

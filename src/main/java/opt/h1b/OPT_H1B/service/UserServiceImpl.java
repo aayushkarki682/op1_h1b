@@ -27,5 +27,16 @@ public class UserServiceImpl implements UserService{
        return userRepository.findAll().stream().collect(Collectors.toList());
     }
 
+    @Override
+    public User findByUserName(String userName) {
+      if(userRepository.findByUserName(userName).isPresent()){
+          return userRepository.findByUserName(userName).get();
+      } else {
+
+          return null;
+
+      }
+    }
+
 
 }
