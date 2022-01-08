@@ -2,9 +2,12 @@ package opt.h1b.OPT_H1B.controller.api;
 
 import opt.h1b.OPT_H1B.domain.User;
 import opt.h1b.OPT_H1B.service.UserService;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 
@@ -15,10 +18,12 @@ public class UserRestController {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final JavaMailSender javaMailSender;
 
-    public UserRestController(UserService userService, PasswordEncoder passwordEncoder) {
+    public UserRestController(UserService userService, PasswordEncoder passwordEncoder, JavaMailSender javaMailSender) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.javaMailSender = javaMailSender;
     }
 
 
@@ -27,6 +32,11 @@ public class UserRestController {
         userClass.setPassword(passwordEncoder.encode(userClass.getPassword()));
         User savedUser = userService.save(userClass);
         if(savedUser.getId() != 0){
+            SimpleMailMessage smp = new SimpleMailMessage();
+            smp.setFrom("danny.karki12345@gmail.com");
+            smp.setTo(savedUser.getEmail());
+            smp.setText("Thanks for Signing upto our website");
+            javaMailSender.send(smp);
             return savedUser;
 
         } else {
@@ -38,19 +48,21 @@ public class UserRestController {
         return userService.getAll();
     }
 
-    @PostMapping("/login")
-    public String loginUser(@RequestBody User user){
+    @PostMapping(path = "/login")
+    public User loginUser(@RequestBody User user){
         String password = user.getPassword();
-        password = passwordEncoder.encode(password);
+
         User dbUser = userService.findByUserName(user.getUserName());
+        System.out.println(dbUser.getPassword());
         if(dbUser != null){
-            if(dbUser.getPassword() == password){
-                return "Success";
+            if(passwordEncoder.matches(password, dbUser.getPassword())){
+
+                return dbUser;
             } else {
-                return "Credential not right";
+                return null;
             }
         } else {
-            return "Credentials not completed";
+            return null;
         }
     }
 

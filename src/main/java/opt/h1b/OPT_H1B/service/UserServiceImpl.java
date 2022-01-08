@@ -29,8 +29,12 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User findByUserName(String userName) {
-      if(userRepository.findByUserName(userName).isPresent()){
-          return userRepository.findByUserName(userName).get();
+        System.out.println(userName);
+        User user =  userRepository.findByUserName(userName).isPresent() ? userRepository.findByUserName(userName).get() : null;
+        System.out.println(user.getUserName());
+      if(user != null){
+          System.out.println("inside");
+          return user;
       } else {
 
           return null;
