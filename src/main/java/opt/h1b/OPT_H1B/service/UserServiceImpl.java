@@ -31,15 +31,29 @@ public class UserServiceImpl implements UserService{
     public User findByUserName(String userName) {
         System.out.println(userName);
         User user =  userRepository.findByUserName(userName).isPresent() ? userRepository.findByUserName(userName).get() : null;
-        System.out.println(user.getUserName());
+
       if(user != null){
-          System.out.println("inside");
+
           return user;
       } else {
 
           return null;
 
       }
+    }
+
+    @Override
+    public User findById(long id) {
+        User user =  userRepository.findById(id).isPresent() ? userRepository.findById(id).get() : null;
+
+        if(user != null){
+
+            return user;
+        } else {
+
+            return null;
+
+        }
     }
 
 

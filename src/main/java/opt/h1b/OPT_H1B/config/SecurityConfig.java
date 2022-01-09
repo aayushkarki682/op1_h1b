@@ -18,17 +18,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and()
                 .antMatcher("/api/**")
-
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/signUp").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/login").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/user/**").permitAll()
                 .anyRequest().authenticated()
-
                 .and()
-
-
                 .formLogin().disable()
-                .httpBasic().and().csrf().disable() ;
+                .httpBasic().and().csrf().disable();
     }
 
     @Bean
