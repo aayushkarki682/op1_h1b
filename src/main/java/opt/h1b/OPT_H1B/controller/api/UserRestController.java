@@ -5,6 +5,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import opt.h1b.OPT_H1B.domain.User;
 import opt.h1b.OPT_H1B.exceptions.UserNotFoundException;
 import opt.h1b.OPT_H1B.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +21,16 @@ import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Locale;
 
 
 @RestController
 @CrossOrigin
 @RequestMapping("/api")
 public class UserRestController {
+
+    @Autowired
+    MessageSource messageSource;
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
@@ -33,6 +40,13 @@ public class UserRestController {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.javaMailSender = javaMailSender;
+    }
+
+    @GetMapping("/goodMorning")
+    public String morning(
+           // @RequestHeader(name = "Accept-Language", required = false) Locale local
+                            ){
+        return messageSource.getMessage("good.morning.message",null, "Default message", LocaleContextHolder.getLocale());
     }
 
 
