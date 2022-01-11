@@ -1,8 +1,12 @@
 package opt.h1b.OPT_H1B.controller.api;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 import opt.h1b.OPT_H1B.domain.User;
 import opt.h1b.OPT_H1B.exceptions.UserNotFoundException;
 import opt.h1b.OPT_H1B.service.UserService;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.mail.MessagingException;
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -32,7 +37,7 @@ public class UserRestController {
 
 
     @PostMapping("/signUp")
-    public ResponseEntity<Object> saveUser(@RequestBody User userClass){
+    public ResponseEntity<Object> saveUser(@Valid @RequestBody User userClass){
         userClass.setPassword(passwordEncoder.encode(userClass.getPassword()));
         User savedUser = userService.save(userClass);
         if(savedUser.getId() != 0){
@@ -57,12 +62,17 @@ public class UserRestController {
     }
 
     @GetMapping(path = "/user/{id}")
-    public User getUser(@PathVariable long id){
+    public EntityModel<User> getUser(@PathVariable long id){
         User retrieved = userService.findById(id);
         if(retrieved == null) {
             throw new UserNotFoundException("ID - "+ id);
         }
-        return retrieved;
+        EntityModel<User> model = EntityModel.of(retrieved);
+
+        WebMvcLinkBuilder linkToAllUsers = linkTo(methodOn(this.getClass()).getAllUsers());
+        model.add(linkToAllUsers.withRel("all-users-link"));
+
+        return model;
     }
     @PostMapping(path = "/login")
     public User loginUser(@RequestBody User user){

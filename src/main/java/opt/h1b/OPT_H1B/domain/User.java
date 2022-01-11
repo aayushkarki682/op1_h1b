@@ -3,6 +3,7 @@ package opt.h1b.OPT_H1B.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 
@@ -22,6 +23,7 @@ public class User {
     private String lastName;
     private String email;
     private String userName;
+    @Size(min = 3, message = "Password should be at least 3 character")
     private String password;
 
     @Singular
