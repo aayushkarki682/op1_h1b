@@ -70,7 +70,7 @@ public class UserRestController {
             return ResponseEntity.status(101).build();
         }
     }
-    @GetMapping(path = "/getAll", produces = "application/json")
+    @GetMapping(path = "/user/getAll")
     public List<User> getAllUsers(){
         return userService.getAll();
     }
