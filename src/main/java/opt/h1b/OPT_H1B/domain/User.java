@@ -1,5 +1,6 @@
 package opt.h1b.OPT_H1B.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class User {
     private String lastName;
     private String email;
     private String userName;
+    @JsonIgnore  //it is called static filtering
     @Size(min = 3, message = "Password should be at least 3 character")
     private String password;
 
